@@ -40,7 +40,7 @@
 
 Создаём файл /etc/dnsmasq.d/pxe.conf и добавляем в него следующее содержимое:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe1.jpg)
 
 Создаём каталоги для файлов TFTP-сервера: `mkdir -p /srv/tftp`
 
