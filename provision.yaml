@@ -2,7 +2,7 @@
 
 - hosts: pxeserver
   become: yes
-  name: otus lesson 29
+  name: PXE
 
   tasks:
 
