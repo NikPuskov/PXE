@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
     server.vm.provision "ansible" do |ansible|
-      ansible.playbook = "ansible/provision.yaml"
+      ansible.playbook = "provision.yaml"
     end
   end
   config.vm.define "pxeclient" do |pxeclient|
