@@ -72,7 +72,7 @@ Cоздаём каталог /srv/images в котором будут храни
 
 Cоздаём файл /etc/apache2/sites-available/ks-server.conf и добавлем в него следующее содержимое:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe3.jpg)
 
 Активируем конфигурацию ks-server в apache: `a2ensite ks-server.conf`
 
