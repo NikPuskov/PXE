@@ -78,7 +78,7 @@ Cоздаём файл /etc/apache2/sites-available/ks-server.conf и добав
 
 Вносим изменения в файл /srv/tftp/amd64/pxelinux.cfg/default:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe4.jpg)
 
 В данном файле мы указываем что файлы linux и initrd будут забираться по tftp, а сам iso-образ ubuntu 24.04.2 будет скачиваться из нашего веб-сервера.
 
@@ -88,7 +88,7 @@ image
 
 На данный момент, если мы запустим ВМ pxeclient, то увидим загрузку по PXE, загрузку iso-образа и откроется мастер установки ubuntu. Но так как на клиенте pxeclient используется 2 сетевых карты, загрузка может начаться не с intnet-интерфейса, а с nat-интерфейса. При этом мы увидим сообщение: "No route to host ...". Решение: временно отключить nat-интерфейс, либо перезагружать виртуальную машину до тех пор пока не начнётся загрузка с intnet-интерфейса. Есть еще параметр виртуальной машины VBox --nicbootprio, в котором можно указать приоритет для сетевой карты при загрузке с PXE. Но мне не удалось повлиять этим параметром на порядок выбора интерфейса. В конфигурации клиента указывал:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe5.jpg)
 
 -----------------------------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ image
 
 Cоздаём файл /srv/ks/user-data и добавляем в него следующее содержимое:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe6.jpg)
 
 `Файл /srv/ks/user-data имеет синтаксис yaml, соответственно нужно соблюдать отступы`
 
@@ -108,11 +108,11 @@ Cоздаём файл с метаданными /srv/ks/meta-data: `touch /srv/
 
 В конфигурации веб-сервера добавим каталог /srv/ks идентично каталогу /srv/images: `nano /etc/apache2/sites-available/ks-server.conf`
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe7.jpg)
 
 В файле /srv/tftp/amd64/pxelinux.cfg/default добавляем параметры автоматической установки:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe8.jpg)
 
 Перезапускаем службы dnsmasq и apache2:
 
