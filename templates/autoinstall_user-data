@@ -1,0 +1,11 @@
+#cloud-config
+autoinstall:
+  identity:
+    hostname: linux
+    password: $6$sJgo6Hg5zXBwkkI8$btrEoWAb5FxKhajagWR49XM4EAOfO/Dr5bMrLOkGe3KkMYdsh7T3MU5mYwY2TIMJpVKckAwnZFs2ltUJ1abOZ.
+    username: otus
+  ssh:
+    allow-pw: true
+    install-server: true
+  version: 1
+  shutdown: poweroff

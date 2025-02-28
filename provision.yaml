@@ -1,0 +1,96 @@
+---
+
+- hosts: pxeserver
+  become: yes
+  name: otus lesson 29
+
+  tasks:
+
+    - name: stop firewall ufw, if started
+      ansible.builtin.service:
+        name: ufw
+        state: stopped
+        enabled: no
+
+    - name: update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: install required packages
+      ansible.builtin.apt:
+        name: "{{item}}"
+        state: latest
+      loop:
+        - dnsmasq
+        - apache2
+
+    - name: create directories if they don't exist
+      ansible.builtin.file:
+        path: "{{item}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      loop:
+        - /srv/tftp
+        - /srv/images
+        - /srv/ks
+
+    - name: download and unarchive netboot files into /srv/tftp
+      ansible.builtin.unarchive:
+        src: https://releases.ubuntu.com/noble/ubuntu-24.04.2-netboot-amd64.tar.gz
+        dest: /srv/tftp
+        remote_src: yes
+
+    - name: download ubuntu 24.04 live server iso
+      ansible.builtin.get_url:
+        url: https://releases.ubuntu.com/noble/ubuntu-24.04.2-live-server-amd64.iso
+        dest: /srv/images
+
+    - name: copy dnsmasq configuration
+      ansible.builtin.template: 
+        src: "templates/pxe.conf"
+        dest: "/etc/dnsmasq.d/pxe.conf"
+      notify:
+        - restart dnsmasq service
+
+    - name: copy pxelinux config
+      ansible.builtin.template:
+        src: "templates/pxelinux.cfg.default"
+        dest: "/srv/tftp/amd64/pxelinux.cfg/default"
+      notify:
+        - restart dnsmasq service
+
+    - name: copy apache ks-server.conf
+      ansible.builtin.template:
+        src: "templates/apache_ks-server.conf"
+        dest: "/etc/apache2/sites-available/ks-server.conf"
+      notify:
+        - enable apache ks-server configuration
+        - restart apache2 service
+
+    - name: copy autoinstall file
+      ansible.builtin.template:
+        src: "templates/autoinstall_user-data"
+        dest: "/srv/ks/user-data"
+    
+    - name: create meta-data file
+      ansible.builtin.file:
+        path: /srv/ks/meta-data
+        state: touch
+
+  handlers:
+
+    - name: restart dnsmasq service
+      ansible.builtin.systemd_service:
+        name: dnsmasq
+        state: restarted
+
+    - name: enable apache ks-server configuration
+      ansible.builtin.command: a2ensite ks-server.conf
+
+    - name: restart apache2 service
+      ansible.builtin.systemd_service:
+        name: apache2
+        state: restarted
+
