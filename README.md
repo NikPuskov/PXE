@@ -52,7 +52,7 @@ Cкачиваем файлы для сетевой установки Ubuntu 24.
 
 В каталоге видим следующие файлы:
 
-image
+![Image alt](https://github.com/NikPuskov/PXE/blob/main/pxe2.jpg)
 
 Перезапускаем службу dnsmasq: `systemctl restart dnsmasq`
 
